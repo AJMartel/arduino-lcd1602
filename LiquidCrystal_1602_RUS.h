@@ -1,7 +1,7 @@
 #include <LiquidCrystal.h>
 #include <Print.h>
 
-#define MAX_SYMBOL_COUNT 8  //Максимальное количество переназначаемых символов от 0 до 7
+#define MAX_SYMBOL_COUNT 8  // Maximum number of reassignable characters from 0 to 7
 #define BYTE 0
 
 class LiquidCrystal_1602_RUS : public LiquidCrystal {
@@ -38,10 +38,10 @@ private:
 
   uint8_t cols_count;
   
-  int symbol_index;//Индекс символа (от 0 до 7)
+  int symbol_index;         // Character Index (0 to 7)
   uint8_t cursor_col;
   uint8_t cursor_row;
-  //===Буквы====
+  // === Letters ====
   uint8_t index_rus_B;
   uint8_t index_rus_G;
   uint8_t index_rus_D;
