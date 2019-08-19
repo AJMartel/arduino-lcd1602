@@ -6,14 +6,14 @@ LiquidCrystal_1602_RUS :: LiquidCrystal_1602_RUS(uint8_t rs,  uint8_t enable,
                              uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3) : LiquidCrystal (rs, enable, d0, d1, d2, d3)
 {
     symbol_index = 0;
-    ResetAllIndex();//Сброс значений индексов (неинициализированы = 255)
+    ResetAllIndex();         // Reset index values (uninitialized = 255)
 }
 void LiquidCrystal_1602_RUS::begin(uint8_t cols, uint8_t lines, uint8_t dotsize)
 {
     cols_count = cols;
     LiquidCrystal::begin(cols, lines, dotsize);
 }
-//заполняет оставшееся место в строке пробелами
+// fills the remaining space in the string with spaces
 void LiquidCrystal_1602_RUS::fillLine()
 {
     for (uint8_t i = cursor_col ; i < cols_count ; i++) {
@@ -85,7 +85,7 @@ void LiquidCrystal_1602_RUS::print(const wchar_t *_str){
     int current_char  = 0;
     int size = 0;
    
-    //Определяем длину строки (количество символов)
+    // Determine the length of the string (number of characters)
     while(_str[size] != 0)
     {
       size++;
@@ -95,9 +95,9 @@ void LiquidCrystal_1602_RUS::print(const wchar_t *_str){
     {
       switch(_str[current_char])
       {
-        //Русский алфавит, требующий новых символов
-        //Единовременно может быть заменено только 8 символов
-        //{
+        // Russian alphabet requiring new characters
+        // Only 8 characters can be replaced at a time
+        // {
         case 1041: //Б
           memcpy_PF(rus_, (uint32_t)rus_B, 8);
           CharSetToLCD((uint8_t *)rus_, &index_rus_B);
@@ -287,7 +287,7 @@ void LiquidCrystal_1602_RUS::print(const wchar_t *_str){
           CharSetToLCD((uint8_t *)rus_, &index_rus_ya);
         break;
         //}
-        //Русский алфавит, использующий одинаковые с английским алфавитом символы
+        // Russian alphabet using the same characters as the English alphabet
         //{
         case 1040: //А
           LiquidCrystal::print("A");
@@ -346,11 +346,11 @@ void LiquidCrystal_1602_RUS::print(const wchar_t *_str){
         case 1093: //x
           LiquidCrystal::print("x");
         break;
-        case 0x00B0: //Знак градуса
+        case 0x00B0: // Degree sign
           LiquidCrystal::write(223);
         break;
         //}
-        //Английский алфавит без изменения
+        // English alphabet without change
         default:
           LiquidCrystal::print((char)_str[current_char]);
         break;
@@ -389,14 +389,14 @@ void LiquidCrystal_1602_RUS::CharSetToLCD(uint8_t *array, uint8_t *index)
 {
   uint8_t x,y;
 
-  if(*index == 255)// Если символ еще не создан, то создаем
+  if(*index == 255)        // If the symbol has not yet been created, then create
   {
     x = getCursorCol();
     y = getCursorRow();
-    createChar(symbol_index, (uint8_t *)array);// Создаем символ на текущем (по очереди) месте в знакогенераторе (от 0 до MAX_SYMBOL_COUNT)
+    createChar(symbol_index, (uint8_t *)array);  // Create a symbol at the current (in turn) place in the character generator (from 0 to MAX_SYMBOL_COUNT)
     setCursor(x,y);
-    write(symbol_index);// Выводим символ на экран
-    //Запоминаем, что букве соответствует определенный индекс
+    write(symbol_index);   // Display the character on the screen
+    // Remember that the letter corresponds to a specific index
     *index = symbol_index;
     symbol_index++;
     if(symbol_index >= MAX_SYMBOL_COUNT)
@@ -405,7 +405,7 @@ void LiquidCrystal_1602_RUS::CharSetToLCD(uint8_t *array, uint8_t *index)
         ResetAllIndex();
     }
   }
-  else   //Иначе печатаем уже существующий
+  else   // Otherwise, print an existing one
     write(*index);
 }
 void LiquidCrystal_1602_RUS::ResetAllIndex()
